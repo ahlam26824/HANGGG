@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediTrack - Your Personal Medication Tracker</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">
+        <i class="fas fa-pills"></i>
+        <h1>MediTrack</h1>
+      </div>
+      <nav>
+        <ul>
+          <li class="active"><a href="#"><i class="fas fa-home"></i> Dashboard</a></li>
+          <li><a href="#"><i class="fas fa-calendar-alt"></i> Calendar</a></li>
+          <li><a href="#"><i class="fas fa-history"></i> History</a></li>
+          <li><a href="#"><i class="fas fa-cog"></i> Settings</a></li>
+        </ul>
+      </nav>
+      <div class="theme-switcher">
+        <span>Theme:</span>
+        <button class="theme-btn blue active" data-theme="blue"></button>
+        <button class="theme-btn green" data-theme="green"></button>
+        <button class="theme-btn red" data-theme="red"></button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <header>
+        <div class="search-bar">
+          <i class="fas fa-search"></i>
+          <input type="text" placeholder="Search medications...">
+        </div>
+        <div class="user-profile">
+          <span>Welcome back!</span>
+          <i class="fas fa-user-circle"></i>
+        </div>
+      </header>
+
+      <!-- Dashboard -->
+      <div class="dashboard">
+        <!-- Upcoming Medication Alert -->
+        <section class="upcoming-med-alert" id="upcomingMedAlert">
+          <div class="alert-header">
+            <i class="fas fa-clock"></i>
+            <h2>Next Medication</h2>
+          </div>
+          <div class="med-time" id="nextMedTime">
+            <div class="med-name" id="nextMedName">No upcoming medications</div>
+            <div class="countdown" id="medCountdown"></div>
+          </div>
+        </section>
+
+        <!-- Quick Stats -->
+        <section class="stats-panel">
+          <div class="stat-card">
+            <i class="fas fa-capsules"></i>
+            <div>
+              <h3>Active Medications</h3>
+              <p id="activeMedsCount">0</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <i class="fas fa-check-circle"></i>
+            <div>
+              <h3>Taken Today</h3>
+              <p id="takenTodayCount">0/0</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <i class="fas fa-calendar-check"></i>
+            <div>
+              <h3>Adherence Rate</h3>
+              <p id="adherenceRate">0%</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Add Medicine Button -->
+        <div class="action-buttons">
+          <button id="addMedicineBtn" class="btn primary-btn">
+            <i class="fas fa-plus-circle"></i> Add New Medication
+          </button>
+        </div>
+
+        <!-- Medicine List -->
+        <section class="med-list-section">
+          <h2><i class="fas fa-list"></i> Your Medications</h2>
+          <div class="table-container">
+            <table id="medicationTable">
+              <thead>
+                <tr>
+                  <th>Medication</th>
+                  <th>Dosage</th>
+                  <th>Schedule</th>
+                  <th>Duration</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="medTableBody">
+                <!-- Medication rows will be added here by JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <!-- Add Medicine Modal -->
+  <div id="addMedicineModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2><i class="fas fa-pills"></i> Add New Medication</h2>
+        <span class="close-modal">&times;</span>
+      </div>
+      <div class="modal-body">
+        <form id="medicineForm">
+          <div class="form-group">
+            <label for="medName"><i class="fas fa-prescription-bottle-alt"></i> Medication Name</label>
+            <input type="text" id="medName" placeholder="Enter medication name" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="medDosage"><i class="fas fa-tablets"></i> Dosage</label>
+            <input type="text" id="medDosage" placeholder="e.g., 10mg, 1 pill" required>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="startDate"><i class="fas fa-calendar-day"></i> Start Date</label>
+              <input type="date" id="startDate" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="endDate"><i class="fas fa-calendar-check"></i> End Date</label>
+              <input type="date" id="endDate" required>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label><i class="fas fa-clock"></i> Schedule</label>
+            <div id="timeSchedules" class="time-schedules">
+              <div class="time-input-group">
+                <input type="time" class="schedule-time" required>
+                <button type="button" class="remove-time-btn"><i class="fas fa-minus-circle"></i></button>
+              </div>
+            </div>
+            <button type="button" id="addTimeBtn" class="btn secondary-btn">
+              <i class="fas fa-plus"></i> Add Another Time
+            </button>
+          </div>
+          
+          <div class="form-group">
+            <label for="medColor"><i class="fas fa-palette"></i> Medication Color</label>
+            <div class="color-selector">
+              <div class="color-option">
+                <input type="radio" name="medColor" id="colorRed" value="red" checked>
+                <label for="colorRed" class="color-label red"></label>
+              </div>
+              <div class="color-option">
+                <input type="radio" name="medColor" id="colorBlue" value="blue">
+                <label for="colorBlue" class="color-label blue"></label>
+              </div>
+              <div class="color-option">
+                <input type="radio" name="medColor" id="colorGreen" value="green">
+                <label for="colorGreen" class="color-label green"></label>
+              </div>
+              <div class="color-option">
+                <input type="radio" name="medColor" id="colorYellow" value="yellow">
+                <label for="colorYellow" class="color-label yellow"></label>
+              </div>
+              <div class="color-option">
+                <input type="radio" name="medColor" id="colorPurple" value="purple">
+                <label for="colorPurple" class="color-label purple"></label>
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="reminderTime"><i class="fas fa-bell"></i> Reminder Settings</label>
+            <select id="reminderTime">
+              <option value="3">Remind 3 minutes before</option>
+              <option value="5">Remind 5 minutes before</option>
+              <option value="10">Remind 10 minutes before</option>
+              <option value="15">Remind 15 minutes before</option>
+              <option value="30">Remind 30 minutes before</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="reminderDuration"><i class="fas fa-hourglass-half"></i> Reminder Duration</label>
+            <select id="reminderDuration">
+              <option value="2">Show reminder for 2 minutes</option>
+              <option value="3">Show reminder for 3 minutes</option>
+              <option value="5">Show reminder for 5 minutes</option>
+              <option value="10">Show reminder for 10 minutes</option>
+              <option value="until-action">Show until action taken</option>
+            </select>
+            <small class="form-text">Reminders will stay visible for at least this long</small>
+          </div>
+          
+          <div class="form-actions">
+            <button type="button" class="btn cancel-btn" id="cancelMedBtn">Cancel</button>
+            <button type="submit" class="btn primary-btn" id="saveMedBtn">Save Medication</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Medication Reminder Modal -->
+  <div id="reminderModal" class="modal reminder-modal">
+    <div class="modal-content">
+      <div class="modal-header reminder-header">
+        <h2><i class="fas fa-bell"></i> Medication Reminder</h2>
+        <span class="close-modal">&times;</span>
+      </div>
+      <div class="modal-body reminder-body">
+        <div class="reminder-icon">
+          <i class="fas fa-pills"></i>
+        </div>
+        <h3>Time to take your medication!</h3>
+        <div class="reminder-details">
+          <p id="reminderMedName">Medication Name</p>
+          <p id="reminderDosage">Dosage: 1 pill</p>
+        </div>
+        <div class="reminder-countdown">
+          <p>Time remaining to take this medication:</p>
+          <div id="reminderCountdown" class="countdown-timer">03:00</div>
+        </div>
+        <div class="reminder-actions">
+          <button class="btn secondary-btn" id="snoozeReminderBtn">Snooze (5min)</button>
+          <button class="btn primary-btn" id="takeMedBtn">Mark as Taken</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

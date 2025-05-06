@@ -1,0 +1,28 @@
+{
+  "name": "medication-tracker-arduino-bridge",
+  "version": "1.0.0",
+  "description": "Bridge between Arduino IR sensor and medication tracker web app",
+  "main": "arduino_server.js",
+  "scripts": {
+    "start": "node arduino_server.js",
+    "dev": "nodemon arduino_server.js"
+  },
+  "keywords": [
+    "arduino",
+    "ir-sensor",
+    "medication",
+    "tracker",
+    "websocket"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "serialport": "^12.0.0",
+    "ws": "^8.14.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+} 
